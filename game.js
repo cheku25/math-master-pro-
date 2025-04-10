@@ -1,3 +1,8 @@
+// Sound Effects
+const correctSound = new Audio("assets/correct.mp3");
+const wrongSound = new Audio("assets/wrong.mp3");
+const gameOverSound = new Audio("assets/gameover.mp3");
+
 let score = 0;
 let level = 1;
 let timeLeft = 10;
@@ -71,13 +76,26 @@ function updateTimer() {
 function checkAnswer() {
   const userAnswer = parseFloat(answerEl.value);
   if (userAnswer === correctAnswer) {
+    correctSound.play();
     score++;
     timeLeft = 10;
     updateLevel();
     updateUI();
     generateQuestion();
   } else {
+    wrongSound.play();
     endGame("❌ Wrong Answer!");
+  }
+}
+
+function endGame(message) {
+  gameOverSound.play();
+  clearInterval(timer);
+  resultEl.textContent = `${message} Final Score: ${score}`;
+  submitBtn.disabled = true;
+  answerEl.disabled = true;
+}
+
   }
 }
 
