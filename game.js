@@ -3,74 +3,81 @@ const correctSound = new Audio("assets/correct.mp3");
 const wrongSound = new Audio("assets/wrong.mp3");
 const gameOverSound = new Audio("assets/gameover.mp3");
 
-let score = 0;
-let level = 1;
-let timeLeft = 10;
-let timer;
-let correctAnswer = 0;
-
+// DOM Elements
 const questionEl = document.getElementById("question");
 const answerEl = document.getElementById("answer");
 const submitBtn = document.getElementById("submit");
+const resultEl = document.getElementById("result");
 const scoreEl = document.getElementById("score");
 const timerEl = document.getElementById("timer");
-const resultEl = document.getElementById("result");
+const levelEl = document.getElementById("level");
 
-function generateQuestion() {
-  let a, b, op;
-  switch (level) {
-    case 1:
-      a = Math.floor(Math.random() * 10);
-      b = Math.floor(Math.random() * 10);
-      op = ['+', '-'][Math.floor(Math.random() * 2)];
-      break;
-    case 2:
-      a = Math.floor(Math.random() * 20);
-      b = Math.floor(Math.random() * 10) + 1;
-      op = ['*', '/'][Math.floor(Math.random() * 2)];
-      break;
-    case 3:
-      a = Math.floor(Math.random() * 30);
-      b = Math.floor(Math.random() * 20) + 1;
-      op = ['+', '-', '*', '/'][Math.floor(Math.random() * 4)];
-      break;
-    default:
-      a = Math.floor(Math.random() * 50);
-      b = Math.floor(Math.random() * 40) + 1;
-      op = ['+', '-', '*', '/'][Math.floor(Math.random() * 4)];
-  }
+let score = 0;
+let level = 1;
+let timeLeft = 10;
+let correctAnswer = 0;
+let timer;
 
-  if (op === '/') {
-    a = a * b; // Ensure division has integer result
-  }
-
-  questionEl.textContent = `${a} ${op} ${b}`;
-  correctAnswer = eval(`${a} ${op} ${b}`);
-  correctAnswer = Math.round(correctAnswer * 100) / 100; // round to 2 decimals
-}
+// Start game
+startGame();
 
 function startGame() {
-  score = 0;
-  level = 1;
-  timeLeft = 10;
-  updateUI();
   generateQuestion();
-  timer = setInterval(updateTimer, 1000);
+  updateUI();
+  startTimer();
 }
 
-function updateUI() {
-  scoreEl.textContent = `Score: ${score}`;
-  timerEl.textContent = `Time: ${timeLeft}s`;
-  answerEl.value = "";
-  resultEl.textContent = "";
+function startTimer() {
+  timer = setInterval(() => {
+    timeLeft--;
+    timerEl.textContent = `⏱️ ${timeLeft}s`;
+    if (timeLeft <= 0) {
+      endGame("⏰ Time's up!");
+    }
+  }, 1000);
 }
 
-function updateTimer() {
-  timeLeft--;
-  timerEl.textContent = `Time: ${timeLeft}s`;
-  if (timeLeft <= 0) {
-    endGame("⏰ Time's up!");
+function generateQuestion() {
+  const operators = ["+", "-", "*", "/", "BODMAS"];
+  let op = operators[Math.floor(Math.random() * operators.length)];
+
+  let a, b, c, question;
+
+  switch (op) {
+    case "+":
+      a = getRandom(10, 20);
+      b = getRandom(1, 10);
+      correctAnswer = a + b;
+      question = `${a} + ${b}`;
+      break;
+    case "-":
+      a = getRandom(10, 20);
+      b = getRandom(1, a);
+      correctAnswer = a - b;
+      question = `${a} - ${b}`;
+      break;
+    case "*":
+      a = getRandom(2, 10);
+      b = getRandom(2, 10);
+      correctAnswer = a * b;
+      question = `${a} × ${b}`;
+      break;
+    case "/":
+      b = getRandom(2, 10);
+      correctAnswer = getRandom(2, 10);
+      a = correctAnswer * b;
+      question = `${a} ÷ ${b}`;
+      break;
+    case "BODMAS":
+      a = getRandom(1, 10);
+      b = getRandom(1, 10);
+      c = getRandom(1, 5);
+      correctAnswer = a + b * c;
+      question = `${a} + ${b} × ${c}`;
+      break;
   }
+
+  questionEl.textContent = `🧠 ${question}`;
 }
 
 function checkAnswer() {
@@ -82,17 +89,11 @@ function checkAnswer() {
     updateLevel();
     updateUI();
     generateQuestion();
+    answerEl.value = "";
   } else {
     wrongSound.play();
     endGame("❌ Wrong Answer!");
   }
-}
-
-}
-
-function updateLevel() {
-  if (score >= 10) level = 3;
-  else if (score >= 5) level = 2;
 }
 
 function endGame(message) {
@@ -103,5 +104,27 @@ function endGame(message) {
   answerEl.disabled = true;
 }
 
+function updateLevel() {
+  if (score > 0 && score % 5 === 0) {
+    level++;
+  }
+}
+
+function updateUI() {
+  scoreEl.textContent = `🏆 Score: ${score}`;
+  levelEl.textContent = `🎮 Level: ${level}`;
+  timerEl.textContent = `⏱️ ${timeLeft}s`;
+}
+
+// Random number helper
+function getRandom(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// Event listener
 submitBtn.addEventListener("click", checkAnswer);
-window.onload = startGame;
+answerEl.addEventListener("keyup", function (e) {
+  if (e.key === "Enter") {
+    checkAnswer();
+  }
+});
