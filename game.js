@@ -88,15 +88,6 @@ function checkAnswer() {
   }
 }
 
-function endGame(message) {
-  gameOverSound.play();
-  clearInterval(timer);
-  resultEl.textContent = `${message} Final Score: ${score}`;
-  submitBtn.disabled = true;
-  answerEl.disabled = true;
-}
-
-  }
 }
 
 function updateLevel() {
@@ -105,6 +96,7 @@ function updateLevel() {
 }
 
 function endGame(message) {
+  gameOverSound.play();
   clearInterval(timer);
   resultEl.textContent = `${message} Final Score: ${score}`;
   submitBtn.disabled = true;
