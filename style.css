@@ -1,0 +1,72 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #2193b0, #6dd5ed);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #fff;
+}
+
+.container {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+h1 {
+  margin-bottom: 20px;
+  font-size: 2em;
+  color: #ffd700;
+}
+
+#info p {
+  font-size: 1.2em;
+  margin: 10px 0;
+}
+
+#question {
+  font-size: 1.8em;
+  margin: 20px 0;
+  color: #00ffcc;
+}
+
+input[type="number"] {
+  padding: 10px;
+  font-size: 1em;
+  width: 80%;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 8px;
+  text-align: center;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 1em;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+#game-over {
+  margin-top: 30px;
+}
+
+.hidden {
+  display: none;
+}
