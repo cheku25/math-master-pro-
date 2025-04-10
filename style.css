@@ -1,72 +1,80 @@
-body {
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(to right, #2193b0, #6dd5ed);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.container {
-  background: rgba(0, 0, 0, 0.7);
-  padding: 30px;
+body {
+  background: linear-gradient(to bottom right, #8ec5fc, #e0c3fc);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.game-container {
+  background: white;
   border-radius: 20px;
-  text-align: center;
-  width: 90%;
+  padding: 30px;
   max-width: 400px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  width: 100%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
 }
 
 h1 {
   margin-bottom: 20px;
-  font-size: 2em;
-  color: #ffd700;
+  color: #4a00e0;
 }
 
-#info p {
-  font-size: 1.2em;
-  margin: 10px 0;
+.game-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  font-weight: bold;
+  font-size: 1.1rem;
 }
 
-#question {
-  font-size: 1.8em;
-  margin: 20px 0;
-  color: #00ffcc;
+.question-box {
+  background-color: #f0f0f0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
 }
 
-input[type="number"] {
+#answer {
   padding: 10px;
-  font-size: 1em;
-  width: 80%;
+  font-size: 1.1rem;
+  width: 100%;
+  border: 2px solid #ddd;
+  border-radius: 10px;
   margin-bottom: 15px;
-  border: none;
-  border-radius: 8px;
   text-align: center;
 }
 
-button {
-  padding: 10px 20px;
-  font-size: 1em;
-  background-color: #28a745;
+button#submit {
+  background-color: #6a11cb;
   color: white;
   border: none;
+  padding: 12px 20px;
   border-radius: 10px;
+  font-size: 1.1rem;
   cursor: pointer;
-  margin-top: 10px;
   transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #218838;
+button#submit:hover {
+  background-color: #5f0eb7;
 }
 
-#game-over {
-  margin-top: 30px;
-}
-
-.hidden {
-  display: none;
+#result {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: red;
 }
