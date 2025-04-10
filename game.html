@@ -2,34 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Math Master Pro+ - Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Math Master Pro+</title>
   <link rel="stylesheet" href="style.css" />
-  <script defer src="game.js"></script>
 </head>
 <body>
-  <div class="container">
-    <h1>Math Master Pro+</h1>
-    <div id="info">
-      <p>Points: <span id="score">0</span></p>
-      <p>Time Left: <span id="timer">10</span> sec</p>
+  <div class="game-container">
+    <h1>🧠 Math Master Pro+</h1>
+    
+    <div class="game-info">
+      <div id="score">Score: 0</div>
+      <div id="timer">Time: 10s</div>
     </div>
 
-      <div id="question-box">
-      <h2 id="question">Loading...</h2>
-      <input type="number" id="answer" placeholder="Your Answer" />
-      <button onclick="checkAnswer()">Submit</button>
+    <div class="question-box">
+      <div id="question">Loading...</div>
     </div>
 
-    <div id="game-over" class="hidden">
-      <h2>Game Over 😢</h2>
-      <p>Your Score: <span id="final-score"></span></p>
-      <button onclick="restartGame()">Play Again</button>
-    </div>
+    <input type="number" id="answer" placeholder="Your answer" />
+    <button id="submit">Submit</button>
+
+    <div id="result"></div>
   </div>
 
-  <!-- Sounds -->
-  <audio id="correct-sound" src="assets/correct.mp3" preload="auto"></audio>
-  <audio id="wrong-sound" src="assets/wrong.mp3" preload="auto"></audio>
-  <audio id="gameover-sound" src="assets/gameover.mp3" preload="auto"></audio>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore-compat.js"></script>
+
+  <!-- Firebase Config -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "SENDER_ID",
+      appId: "APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
+
+  <!-- Game Script -->
+  <script src="game.js"></script>
 </body>
 </html>
