@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Math Master Pro+ - Game</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="game.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Math Master Pro+</h1>
+    <div id="info">
+      <p>Points: <span id="score">0</span></p>
+      <p>Time Left: <span id="timer">10</span> sec</p>
+    </div>
+
+    <div id="question-box">
+      <h2 id="question">Loading...</h2>
+      <input type="number" id="answer" placeholder="Your Answer" />
+      <button onclick="checkAnswer()">Submit</button>
+    </div>
+
+    <div id="game-over" class="hidden">
+      <h2>Game Over 😢</h2>
+      <p>Your Score: <span id="final-score"></span></p>
+      <button onclick="restartGame()">Play Again</button>
+    </div>
+  </div>
+
+  <!-- Sounds -->
+  <audio id="correct-sound" src="assets/correct.mp3" preload="auto"></audio>
+  <audio id="wrong-sound" src="assets/wrong.mp3" preload="auto"></audio>
+  <audio id="gameover-sound" src="assets/gameover.mp3" preload="auto"></audio>
+</body>
+</html>
