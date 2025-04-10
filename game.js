@@ -1,107 +1,97 @@
 let score = 0;
-let timer;
-let timeLeft = 10;
 let level = 1;
+let timeLeft = 10;
+let timer;
+let correctAnswer = 0;
 
 const questionEl = document.getElementById("question");
 const answerEl = document.getElementById("answer");
+const submitBtn = document.getElementById("submit");
 const scoreEl = document.getElementById("score");
 const timerEl = document.getElementById("timer");
 const resultEl = document.getElementById("result");
 
-const correctSound = new Audio("assets/correct.mp3");
-const wrongSound = new Audio("assets/wrong.mp3");
-const gameoverSound = new Audio("assets/gameover.mp3");
-
 function generateQuestion() {
-  let a, b, operator, question, correctAnswer;
-
+  let a, b, op;
   switch (level) {
     case 1:
       a = Math.floor(Math.random() * 10);
       b = Math.floor(Math.random() * 10);
-      operator = ['+', '-'][Math.floor(Math.random() * 2)];
+      op = ['+', '-'][Math.floor(Math.random() * 2)];
       break;
     case 2:
       a = Math.floor(Math.random() * 20);
       b = Math.floor(Math.random() * 10) + 1;
-      operator = ['*', '/'][Math.floor(Math.random() * 2)];
+      op = ['*', '/'][Math.floor(Math.random() * 2)];
+      break;
+    case 3:
+      a = Math.floor(Math.random() * 30);
+      b = Math.floor(Math.random() * 20) + 1;
+      op = ['+', '-', '*', '/'][Math.floor(Math.random() * 4)];
       break;
     default:
       a = Math.floor(Math.random() * 50);
-      b = Math.floor(Math.random() * 50) + 1;
-      operator = ['+', '-', '*', '/'][Math.floor(Math.random() * 4)];
+      b = Math.floor(Math.random() * 40) + 1;
+      op = ['+', '-', '*', '/'][Math.floor(Math.random() * 4)];
   }
 
-  switch (operator) {
-    case '+': correctAnswer = a + b; break;
-    case '-': correctAnswer = a - b; break;
-    case '*': correctAnswer = a * b; break;
-    case '/': correctAnswer = parseFloat((a / b).toFixed(2)); break;
+  if (op === '/') {
+    a = a * b; // Ensure division has integer result
   }
 
-  question = `${a} ${operator} ${b}`;
-  questionEl.textContent = question;
-  questionEl.dataset.answer = correctAnswer;
+  questionEl.textContent = `${a} ${op} ${b}`;
+  correctAnswer = eval(`${a} ${op} ${b}`);
+  correctAnswer = Math.round(correctAnswer * 100) / 100; // round to 2 decimals
 }
 
 function startGame() {
   score = 0;
   level = 1;
   timeLeft = 10;
-  updateScore();
+  updateUI();
   generateQuestion();
-  updateTimer();
   timer = setInterval(updateTimer, 1000);
 }
 
-function updateScore() {
+function updateUI() {
   scoreEl.textContent = `Score: ${score}`;
-  if (score >= 5) level = 2;
-  if (score >= 10) level = 3;
+  timerEl.textContent = `Time: ${timeLeft}s`;
+  answerEl.value = "";
+  resultEl.textContent = "";
 }
 
 function updateTimer() {
   timeLeft--;
   timerEl.textContent = `Time: ${timeLeft}s`;
-  if (timeLeft <= 0) endGame("Time's up!");
+  if (timeLeft <= 0) {
+    endGame("⏰ Time's up!");
+  }
 }
 
 function checkAnswer() {
   const userAnswer = parseFloat(answerEl.value);
-  const correct = parseFloat(questionEl.dataset.answer);
-
-  if (userAnswer === correct) {
-    correctSound.play();
+  if (userAnswer === correctAnswer) {
     score++;
-    updateScore();
     timeLeft = 10;
+    updateLevel();
+    updateUI();
     generateQuestion();
-    answerEl.value = "";
   } else {
-    wrongSound.play();
-    endGame("Wrong Answer!");
+    endGame("❌ Wrong Answer!");
   }
+}
+
+function updateLevel() {
+  if (score >= 10) level = 3;
+  else if (score >= 5) level = 2;
 }
 
 function endGame(message) {
   clearInterval(timer);
-  gameoverSound.play();
   resultEl.textContent = `${message} Final Score: ${score}`;
-  saveScore(score);
+  submitBtn.disabled = true;
+  answerEl.disabled = true;
 }
 
-function saveScore(score) {
-  const user = firebase.auth().currentUser;
-  if (user) {
-    const db = firebase.firestore();
-    db.collection("scores").add({
-      uid: user.uid,
-      score: score,
-      time: new Date()
-    });
-  }
-}
-
-document.getElementById("submit").addEventListener("click", checkAnswer);
+submitBtn.addEventListener("click", checkAnswer);
 window.onload = startGame;
